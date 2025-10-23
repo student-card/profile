@@ -518,7 +518,7 @@ body {
             fetch('https://mugishatumusifu.github.io/student-profiles/students.json')
                 .then(response => response.json())
                 .then(data => {
-                    const student = data.students.find(s => s.id === studentId);
+                    const student = data.students.find(s => String(s.id) === String(studentId));
                     if (student) {
                         displayStudent(student);
                     } else {
