@@ -506,57 +506,69 @@ body {
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const studentId = urlParams.get('id');
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let studentId = urlParams.get('id');
 
-            if (!studentId) {
-                showFallback();
-                return;
+    if (!studentId) {
+        showFallback();
+        return;
+    }
+
+    // Trim and normalize studentId to avoid hidden characters
+    studentId = studentId.trim();
+
+    fetch('https://mugishatumusifu.github.io/student-profiles/students.json')
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch students.json');
+            return response.json();
+        })
+        .then(data => {
+            if (!data.students || !Array.isArray(data.students)) {
+                throw new Error('Invalid JSON structure');
             }
 
-            fetch('https://mugishatumusifu.github.io/student-profiles/students.json')
-                .then(response => response.json())
-                .then(data => {
-                    const student = data.students.find(s => String(s.id) === String(studentId));
-                    if (student) {
-                        displayStudent(student);
-                    } else {
-                        showFallback();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading students.json:', error);
-                    showFallback();
-                });
-        });
-
-        function displayStudent(student) {
-            const photoImg = document.getElementById('student-photo');
-            const photoSvg = photoImg.nextElementSibling;
-            
-            if (student.photo) {
-                photoImg.src = student.photo;
-                photoImg.style.display = 'block';
-                photoSvg.style.display = 'none';
+            // Compare IDs as strings, trimmed
+            const student = data.students.find(s => String(s.id).trim() === studentId);
+            if (student) {
+                displayStudent(student);
             } else {
-                photoImg.style.display = 'none';
-                photoSvg.style.display = 'block';
+                showFallback();
             }
-            
-            document.getElementById('student-name').textContent = student.name;
-            document.getElementById('student-id').textContent = student.id;
-            document.getElementById('student-gender').textContent = student.gender;
-            document.getElementById('student-status').textContent = student.status;
-            document.getElementById('student-class').textContent = student.class;
-            document.getElementById('fallback-message').style.display = 'none';
-            document.getElementById('student-card').style.display = 'block';
-        }
+        })
+        .catch(error => {
+            console.error('Error loading students.json:', error);
+            showFallback();
+        });
+});
 
-        function showFallback() {
-            document.getElementById('student-card').style.display = 'none';
-            document.getElementById('fallback-message').style.display = 'block';
-        }
-    </script>
+function displayStudent(student) {
+    const photoImg = document.getElementById('student-photo');
+    const photoSvg = photoImg.nextElementSibling;
+
+    if (student.photo) {
+        photoImg.src = student.photo;
+        photoImg.style.display = 'block';
+        photoSvg.style.display = 'none';
+    } else {
+        photoImg.style.display = 'none';
+        photoSvg.style.display = 'block';
+    }
+
+    document.getElementById('student-name').textContent = student.name || '';
+    document.getElementById('student-id').textContent = student.id || '';
+    document.getElementById('student-gender').textContent = student.gender || '';
+    document.getElementById('student-status').textContent = student.status || '';
+    document.getElementById('student-class').textContent = student.class || '';
+
+    document.getElementById('fallback-message').style.display = 'none';
+    document.getElementById('student-card').style.display = 'block';
+}
+
+function showFallback() {
+    document.getElementById('student-card').style.display = 'none';
+    document.getElementById('fallback-message').style.display = 'block';
+}
+</script>
 </body>
 </html>
