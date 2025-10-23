@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Trim and normalize studentId to avoid hidden characters
     studentId = studentId.trim();
 
-    fetch('https://mugishatumusifu.github.io/student-profiles/students.json')
+    fetch('https://student-card.github.io/profile/students.json')
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch students.json');
             return response.json();
