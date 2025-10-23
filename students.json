@@ -1,0 +1,20 @@
+{
+  "students": [
+    {
+      "id": "APRD78612",
+      "name": "Mugisha Tumusifu Chretien",
+      "gender": "Male",
+      "status": "Boarding",
+      "class": "L5 SOD",
+      "photo": "images/9ef21bcc-94ba-4ed8-a03f-45d283d559e3.jpeg"
+    },
+    {
+      "id": "APRD786125",
+      "name": "Mugisha Afani",
+      "gender": "Male",
+      "status": "Boarding",
+      "class": "L5 SOD",
+      "photo": "images/d6e50a6f-b1fb-4726-b77c-f27f6d2c271b.jpeg"
+    }
+  ]
+}
