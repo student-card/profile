@@ -505,7 +505,7 @@ body {
         </div>
     </div>
 
-    <script>
+   <script>
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     let studentId = urlParams.get('id');
@@ -515,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Trim and normalize studentId to avoid hidden characters
     studentId = studentId.trim();
 
     fetch('https://student-card.github.io/profile/students.json')
@@ -528,7 +527,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Invalid JSON structure');
             }
 
-            // Compare IDs as strings, trimmed
             const student = data.students.find(s => String(s.id).trim() === studentId);
             if (student) {
                 displayStudent(student);
@@ -560,6 +558,22 @@ function displayStudent(student) {
     document.getElementById('student-gender').textContent = student.gender || '';
     document.getElementById('student-status').textContent = student.status || '';
     document.getElementById('student-class').textContent = student.class || '';
+
+    // Academic Year (example: "2025-2026")
+    const academicYear = "2025-2026";
+    const academicYearElement = document.querySelector('.info-grid .info-item:nth-child(4) .info-value');
+    if (academicYearElement) academicYearElement.textContent = academicYear;
+
+    // 🔥 Dynamic Active Status based on date
+    const [startYear, endYear] = academicYear.split('-').map(Number);
+    const today = new Date();
+    const expiryDate = new Date(`${endYear}-08-01`); // August 1 of end year
+
+    const active = today < expiryDate ? "Yes" : "No";
+    const color = active === "Yes" ? "green" : "red";
+
+    const activeElement = document.querySelector('.projects-grid .info-item:nth-child(2) .info-value');
+    activeElement.innerHTML = `<p style="color: white; background: ${color}; padding: 7px; border-radius: 15px; text-align: center;">${active}</p>`;
 
     document.getElementById('fallback-message').style.display = 'none';
     document.getElementById('student-card').style.display = 'block';
